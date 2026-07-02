@@ -204,17 +204,16 @@ footer{background:var(--black);border-top:1px solid var(--border);padding:48px;t
   <!-- 영상 없을 때 폴백 배경 -->
   <div class="hero-fallback" id="heroFallback"></div>
 
-  <!-- mp4 영상 배경 -->
-  <!-- ⚠ video 태그의 src를 실제 영상 URL로 교체하세요 -->
-  <video
-    class="hero-video"
+  <!-- 구글 드라이브 영상 배경 (iframe) -->
+  <iframe
     id="heroVideo"
-    autoplay
-    muted
-    loop
-    playsinline
-    src="https://drive.google.com/file/d/18SDrmIa_E-SGEQgynPmU_75Dne0HocX5/view?usp=sharing"
-  ></video>
+    class="hero-video"
+    src="https://drive.google.com/file/d/18SDrmIa_E-SGEQgynPmU_75Dne0HocX5/preview"
+    frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+    style="pointer-events:none;"
+  ></iframe>
 
   <!-- 어두운 오버레이 -->
   <div class="hero-overlay"></div>
@@ -229,7 +228,7 @@ footer{background:var(--black);border-top:1px solid var(--border);padding:48px;t
     </h1>
     <p class="hero-desc">
       인테리어·Maya 3D·게임원화부터 AI 크리에이터까지.<br>
-      종로 캠퍼스에서 실무 중심으로 배웁니다.
+      수원·종로 캠퍼스에서 실무 중심으로 배웁니다.
     </p>
     <div class="hero-btns">
       <a href="#courses" class="btn-primary">과정 둘러보기</a>
@@ -256,7 +255,7 @@ footer{background:var(--black);border-top:1px solid var(--border);padding:48px;t
 <div class="stats-bar">
   <div class="stats-inner">
     <div><span class="stat-num"><span>9</span>개</span><div class="stat-label">전문 교육과정</div></div>
-    <div><span class="stat-num"><span>2</span>곳</span><div class="stat-label">종로 캠퍼스</div></div>
+    <div><span class="stat-num"><span>2</span>곳</span><div class="stat-label">수원 · 종로 캠퍼스</div></div>
     <div><span class="stat-num"><span>5</span>개</span><div class="stat-label">AI 신규과정</div></div>
     <div><span class="stat-num"><span>87</span>%</span><div class="stat-label">수료 후 취업률</div></div>
   </div>
@@ -339,28 +338,13 @@ const ctrl    = document.getElementById("videoCtrl");
 const notice  = document.getElementById("uploadNotice");
 const fallback= document.getElementById("heroFallback");
 
-// 영상 src가 비어있으면 폴백 표시
-if (!video.src || video.src === window.location.href) {
-  video.style.display = "none";
-  fallback.style.display = "block";
-  ctrl.style.display = "none";
-} else {
+// 구글 드라이브 iframe 영상 처리
+if (video) {
   notice.classList.add("hidden");
   fallback.style.display = "none";
-  video.play().catch(() => {
-    // 자동재생 차단 시 조용히 처리
-    video.muted = true;
-    video.play();
-  });
 }
-
-// 재생/일시정지 토글
-let playing = true;
-ctrl.addEventListener("click", () => {
-  if (playing) { video.pause(); ctrl.textContent = "▶"; }
-  else         { video.play();  ctrl.textContent = "⏸"; }
-  playing = !playing;
-});
+// iframe은 재생/정지 버튼 미사용
+ctrl.style.display = "none";
 
 // ── 과정 데이터 ──────────────────────────────────────────────
 const COURSES = [
